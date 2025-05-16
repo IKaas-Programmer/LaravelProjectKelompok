@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\UsersResource\Pages;
+namespace App\Filament\Resources\AgendasResource\Pages;
 
-use App\Filament\Resources\UsersResource;
+use App\Filament\Resources\AgendasResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
-class CreateUsers extends CreateRecord
+class CreateAgendas extends CreateRecord
 {
-    protected static string $resource = UsersResource::class;
+    protected static string $resource = AgendasResource::class;
 
     protected function mutateFormDataBeforeCreate(array $data): array
 {

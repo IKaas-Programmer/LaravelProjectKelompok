@@ -2,10 +2,11 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UsersResource\Pages;
-use App\Filament\Resources\UsersResource\RelationManagers;
-use App\Models\Users;
+use App\Filament\Resources\ArticlesResource\Pages;
+use App\Filament\Resources\ArticlesResource\RelationManagers;
+use App\Models\Articles;
 use Filament\Forms;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -14,10 +15,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\TextInput;
 
-
-class UsersResource extends Resource
+class ArticlesResource extends Resource
 {
-    protected static ?string $model = Users::class;
+    protected static ?string $model = Articles::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -25,15 +25,11 @@ class UsersResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->required(),
-                TextInput::make('email')
+                Forms\Components\TextInput::make('title')
                     ->required()
-                    ->email()
-                    ->unique(Users::class, 'email', ignoreRecord: true)
-                    ->maxLength(255),
-                TextInput::make('password')
-                    ->required()
+                    ->Placeholder('No Title'),
+                Forms\Components\TextInput::make('description')
+                    ->Placeholder('No Description'),
             ]);
     }
 
@@ -43,31 +39,18 @@ class UsersResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('title')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email')
+                Tables\Columns\TextColumn::make('description')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('password')
-                    ->label('Password')
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('Created At')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->label('Updated At')
-                    ->dateTime()
-                    ->sortable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -86,9 +69,9 @@ class UsersResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUsers::route('/create'),
-            'edit' => Pages\EditUsers::route('/{record}/edit'),
+            'index' => Pages\ListArticles::route('/'),
+            'create' => Pages\CreateArticles::route('/create'),
+            'edit' => Pages\EditArticles::route('/{record}/edit'),
         ];
     }
 }
