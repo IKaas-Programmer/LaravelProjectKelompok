@@ -4,16 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class articles_comments extends Model
+class articlescomments extends Model
 {
     protected $fillable = [
-        'user_id',
+        'id',
         'comment',
-        'articles_id',
+        'article_id',
     ];
 
     public function articles()
     {
-        return $this->belongsTo(Articles::class);
+        return $this->belongsTo(Articles::class, 'article_id');
     }
 }

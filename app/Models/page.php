@@ -2,29 +2,25 @@
 
 namespace App\Models;
 
-use Dom\Comment;
 use Illuminate\Database\Eloquent\Model;
 
-class articles extends Model
+class page extends Model
 {
     protected $fillable = [
-        'user_id',
+        'id',
         'title',
         'description',
+        'user_id',
     ];
 
-    public function articles()
-    {
+    public function articles() {
+
         return $this->belongsTo(Articles::class, 'article_id');
     }
 
     public function user()
     {
-        return $this->belongsTo(Users::class);
-    }
-
-    public function comments()
-    {
-        return $this->morphMany(Comment::class, 'commentable');
+        return $this->belongsTo(Users::class, 'user_id');
     }
 }
+// Compare this snippet from app/Models/users.php:

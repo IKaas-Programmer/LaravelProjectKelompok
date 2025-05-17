@@ -41,8 +41,16 @@ class ArticlesResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->sortable()
+                    ->searchable()
+                    ->description(fn (Articles $record): string => $record->description),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Created At')
+                    ->dateTime()
+                    ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('description')
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Updated At')
+                    ->dateTime()
                     ->sortable()
                     ->searchable(),
             ])
@@ -51,6 +59,10 @@ class ArticlesResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->action(function (Articles $record) {
+                        $record->delete();
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

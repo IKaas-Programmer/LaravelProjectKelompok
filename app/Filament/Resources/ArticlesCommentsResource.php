@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ArticlesCommentsResource\Pages;
 use App\Filament\Resources\ArticlesCommentsResource\RelationManagers;
-use App\Models\ArticlesComments;
+use App\Models\articlescomments;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ArticlesCommentsResource extends Resource
 {
-    protected static ?string $model = ArticlesComments::class;
+    protected static ?string $model = articlescomments::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,7 +23,12 @@ class ArticlesCommentsResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('article_id')
+                    ->required()
+                    ->placeholder('No Article ID'),
+                Forms\Components\TextInput::make('comment')
+                    ->required()
+                    ->placeholder('No Comment'),
             ]);
     }
 
@@ -31,14 +36,39 @@ class ArticlesCommentsResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('id')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('article.title')
+                    ->relationship('article', 'title')
+                    ->sortable()
+                    ->searchable()
+                    ->description(fn (articlescomments $record): string => $record->article->title ?? 'No Article')
+                    ,
+                Tables\Columns\TextColumn::make('comment')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Created At')
+                    ->dateTime()
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Updated At')
+                    ->dateTime()
+                    ->sortable()
+                    ->searchable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-            ])
+                Tables\Actions\DeleteAction::make()
+                    ->label('Delete')
+                    ->action(function (articlescomments $record) {
+                        $record->delete();
+                    })
+                ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
