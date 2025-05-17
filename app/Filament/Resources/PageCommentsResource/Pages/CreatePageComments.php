@@ -16,4 +16,11 @@ class CreatePageComments extends CreateRecord
 
     return $data;
 }
+
+protected function mutateFormDataBeforeSave(array $data): array
+    {
+    $data['last_edited_by_id'] = auth()->id();
+
+    return $data;
+    }
 }

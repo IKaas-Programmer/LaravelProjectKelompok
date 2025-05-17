@@ -17,6 +17,13 @@ class EditArticlesComments extends EditRecord
         ];
     }
 
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+    $data['last_edited_by_id'] = auth()->id();
+
+    return $data;
+    }
+
     protected function mutateFormDataBeforeFill(array $data): array
 {
     $data['user_id'] = auth()->id();
