@@ -4,18 +4,22 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CommentsResource\Pages;
 use App\Filament\Resources\CommentsResource\RelationManagers;
-use App\Models\Comments;
+use App\Models\articles;
+use App\Models\page;
+use App\Models\comments;
+use App\Models\agendas;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Forms\Components\Select;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CommentsResource extends Resource
 {
-    protected static ?string $model = Comments::class;
+    protected static ?string $model = comments::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,7 +27,27 @@ class CommentsResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('comment')
+                    ->placeholder('No Comment'),
+                Select::make('commentable_type')
+                ->label('Tipe Konten')
+                ->options([
+                    articles::class => 'Articles',
+                    page::class     => 'Page', // Uncomment and import if you have a Page model
+                    agendas::class => 'Agendas', // Uncomment and import if you have a Agendas model
+                    // Tambahkan model lain jika perlu
+                ])
+                ->required(),
+                Select::make('commentable_id')
+                ->label('Konten')
+                ->options(fn (callable $get) => match ($get('commentable_type')) {
+                    articles::class => Articles::all()->pluck('title', 'id'),
+                    default => [],
+                    page::class => page::all()->pluck('title', 'id'),
+                    agendas::class => agendas::all()->pluck('title', 'id'),
+                    // Tambahkan model lain jika perlu
+                })
+                ->reactive(),
             ]);
     }
 
@@ -31,13 +55,40 @@ class CommentsResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('id')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('commentable.title')
+                    ->label('Judul')
+                    ->formatStateUsing(fn ($record) => $record->commentable?->title ?? '-')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('comment')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Created At')
+                    ->dateTime()
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Updated At')
+                    ->dateTime()
+                    ->sortable()
+                    ->searchable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->action(function (comments $record) {
+                        $record->delete();
+                    })
+                    ->requiresConfirmation()
+                    ->label('Delete Comment')
+                    ->color('danger')
+                    ->icon('heroicon-o-trash'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

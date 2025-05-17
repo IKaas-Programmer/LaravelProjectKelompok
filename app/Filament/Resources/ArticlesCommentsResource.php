@@ -10,6 +10,9 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\Select;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -23,9 +26,12 @@ class ArticlesCommentsResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('article_id')
+                Forms\Components\Select::make('article_id')
+                    ->relationship('article', 'title')
+                    ->searchable()
+                    ->preload()
                     ->required()
-                    ->placeholder('No Article ID'),
+                    ->placeholder('Pilih Article'),
                 Forms\Components\TextInput::make('comment')
                     ->required()
                     ->placeholder('No Comment'),
@@ -39,10 +45,10 @@ class ArticlesCommentsResource extends Resource
                 Tables\Columns\TextColumn::make('id')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('article.title')
-                    ->relationship('article', 'title')
+                    ->label('Article Title')
                     ->sortable()
                     ->searchable()
-                    ->description(fn (articlescomments $record): string => $record->article->title ?? 'No Article')
+                    ->description(fn (articlescomments $record): string => $record->article->description ?? 'No Article')
                     ,
                 Tables\Columns\TextColumn::make('comment')
                     ->sortable()

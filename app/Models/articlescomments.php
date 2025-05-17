@@ -12,7 +12,7 @@ class articlescomments extends Model
         'article_id',
     ];
 
-    public function articles()
+    public function article()
     {
         return $this->belongsTo(Articles::class, 'article_id');
     }

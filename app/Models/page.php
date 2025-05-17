@@ -22,5 +22,10 @@ class page extends Model
     {
         return $this->belongsTo(Users::class, 'user_id');
     }
+
+    public function comments()
+    {
+        return $this->morphMany(\App\Models\comments::class, 'commentable');
+    }
 }
 // Compare this snippet from app/Models/users.php:
