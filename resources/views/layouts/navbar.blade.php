@@ -9,12 +9,27 @@
         <li class="nav-item">
         <a class="nav-link active" aria-current="page" href="#">Home</a>
         </li>
+
         <li class="nav-item">
-        <a class="nav-link" href="#">Features</a>
+        <a class="nav-link" href="{{ route('articles') }}">Articles</a>
         </li>
+
         <li class="nav-item">
-        <a class="nav-link" href="#">Pricing</a>
+        <a class="nav-link" href="#">API</a>
         </li>
+
+        <li class="nav-item">
+        <a class="nav-link" href="#">Pages</a>
+        </li>
+
+        <li class="nav-item">
+        <a class="nav-link" href="#">Comments</a>
+        </li>
+
+        <li class="nav-item">
+        <a class="nav-link" href="#">About</a>
+        </li>
+
         <li class="nav-item">
         <a class="nav-link disabled">Disabled</a>
         </li>

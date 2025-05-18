@@ -22,7 +22,9 @@
     </header>
 
     <main>
-
+        <div class="container-md">
+            @yield('main')
+        </div>
     </main>
 
     <footer>
