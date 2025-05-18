@@ -7,7 +7,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
         <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="#">Home</a>
+        <a class="nav-link active" aria-current="page" href=" {{ route('home') }}">Home</a>
         </li>
 
         <li class="nav-item">
@@ -19,15 +19,15 @@
         </li>
 
         <li class="nav-item">
-        <a class="nav-link" href="#">Pages</a>
+        <a class="nav-link" href="{{ route('pages') }}">Pages</a>
         </li>
 
         <li class="nav-item">
-        <a class="nav-link" href="#">Comments</a>
+        <a class="nav-link" href=" {{ route('comments') }}">Comments</a>
         </li>
 
         <li class="nav-item">
-        <a class="nav-link" href="#">About</a>
+        <a class="nav-link" href=" {{ route('about') }}">About</a>
         </li>
 
         <li class="nav-item">
