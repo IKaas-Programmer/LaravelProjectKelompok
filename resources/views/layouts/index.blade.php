@@ -11,14 +11,16 @@
 <body>
     <header>
         @include('layouts.navbar')
+        {{-- 
         <div class="container md-4">
             <div class="row">
-                <div class="col">
-                    <h1>Project Laravel Kelompok</h1>
-                    <p>Selamat datang di project Laravel kelompok kami. Di sini Anda akan menemukan berbagai informasi dan fitur menarik yang kami tawarkan.</p>
-                </div>
+            <div class="col">
+                <h1>Project Laravel Kelompok</h1>
+                <p>Selamat datang di project Laravel kelompok kami. Di sini Anda akan menemukan berbagai informasi dan fitur menarik yang kami tawarkan.</p>
+            </div>
             </div>
         </div>
+        --}}
     </header>
 
     <main>
