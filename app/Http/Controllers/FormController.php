@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Hash;
-use Illuminate\Container\Attributes\Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class FormController extends Controller
@@ -19,13 +19,17 @@ class FormController extends Controller
         $credentials = $request->only('email', 'password');
 
         if(Auth::attempt($credentials)) {
-            // Authentication passed...
-            return redirect()->intended('dashboard')->with('success', 'Login successful!');
-        }
-
-        // Perform login logic here
+            // Perform login logic here
 
         return redirect()->route('dashboard')->with('success', 'Login successful!');
+        } else {
+            return back()->withErrors([
+                'email' => 'Email is incorrect.',
+                'password' => 'Password is incorrect.',
+            ]);
+        }
+
+        
     }
 
     public function register(Request $request)

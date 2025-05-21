@@ -1,9 +1,12 @@
 <?php
 
+use App\Models\articlescomments;
+use App\Models\comments;
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FormController;
+use App\Models\Comment;
+use App\Models\Page;
 
 
 //Route::get('/', function () {
@@ -16,7 +19,7 @@ Route::get('/index', [HomeController::class, 'index'])->name('index');
 
 Route::get('/articles', [HomeController::class, 'articles'])->name('articles');
 
-Route::get('/api',[HomeController::class,'api'])->name('api');
+Route::get('/api', [HomeController::class, 'api'])->name('api');
 
 Route::get('/pages', [HomeController::class, 'pages'])->name('pages');
 
@@ -28,7 +31,7 @@ Route::get('/about', [HomeController::class, 'about'])->name('about');
 
 // login form
 Route::get('/login', function () {
-    return view('Form.login');   
+    return view('Form.login');
 })->name('login');
 Route::post('/login', [FormController::class, 'login'])->name('login.process');
 
@@ -59,3 +62,23 @@ Route::get('/dashboard', function () {
 
 
 // Logout
+
+
+
+
+
+
+// Articles Comments
+Route::get('/articlescomment', function () {
+    $data = comments::with('articles')->get();
+    return view('Comments.articlescomment', compact('data'));
+})->name('articlescomment');
+
+
+// pages comments
+Route::get('/pagescomment', function () {
+    $data = Comments::with('page')
+        ->where('commentable_type', 'App\Models\page')
+        ->get();
+    return view('Comments.pagescomment', compact('data'));
+})->name('pagescomment');

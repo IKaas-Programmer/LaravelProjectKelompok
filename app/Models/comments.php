@@ -17,4 +17,13 @@ class comments extends Model
     {
         return $this->morphTo();
     }
+
+    public function articles()
+{
+    return $this->belongsTo(articles::class, 'article_id');
+}
+
+    public function page() {
+        return $this->belongsTo(page::class, 'page_id');
+    }
 }
